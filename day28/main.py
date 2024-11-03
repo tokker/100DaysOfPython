@@ -1,6 +1,8 @@
 from tkinter import *
 import time
 import tkinter.messagebox
+import os
+import sys
 
 
 # ---------------------------- CONSTANTS ------------------------------- #
@@ -49,6 +51,13 @@ def count_down(c, tl, cm):
         cm.config(text="")
     c.itemconfig(timer_text, text=time.strftime('%M:%S', time.gmtime(seconds)))
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        # Running from a bundled app
+        return os.path.join(sys._MEIPASS, relative_path)
+    else:
+        # Running from source
+        return os.path.join(os.path.abspath("."), relative_path)
 
 window = Tk()
 window.minsize(200, 224)
@@ -60,7 +69,8 @@ titleLabel = Label(text="Work", font=(FONT_NAME, 50, "bold"), bg=YELLOW, highlig
 titleLabel.grid(row=0, column=1)
 
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
-tomatoImage = PhotoImage(file="tomato.png")
+image_path = resource_path("assets/tomato.png")
+tomatoImage = PhotoImage(file=image_path)
 canvas.create_image(100, 112, image=tomatoImage)
 timer_text = canvas.create_text(100, 130, text="25:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(row=1, column=1)
